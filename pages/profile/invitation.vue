@@ -27,6 +27,7 @@
 		<!-- <image src="/static/images/profile/pic_erweima.png" mode="" ></image> -->
 		<view class="click" @click="capture"></view>
 		<view class="code_text">注册邀请码: {{info.id}}</view>
+		<view class="load-btn" @click="loadBtn">复制下载链接</view>
 	</view>
 </template>
 
@@ -37,7 +38,7 @@ export default {
 	data() {
 		return {
 			val: '', // 要生成的二维码值
-			size: 200, // 二维码大小
+			size: 160, // 二维码大小
 			unit: 'upx', // 单位
 			background: '#fff', // 背景色
 			pdground: '#000', // 角标色
@@ -46,7 +47,8 @@ export default {
 			lv: 3, // 二维码容错级别 ， 一般不用设置，默认就行
 			onval: false, // val值变化时自动重新生成二维码
 			loadMake: true, // 组件加载完成后自动生成二维码
-			src: '' // 二维码生成后的图片地址或base64
+			src: '' ,// 二维码生成后的图片地址或base64
+			promotionCopyData:''
 		};
 	},
 	methods: {
@@ -103,10 +105,20 @@ export default {
 				}
 			);
 			//currentWebview.append(amway_bit);
+		},
+		loadBtn() {
+			uni.setClipboardData({
+			    data: this.promotionCopyData
+			});
 		}
 	},
 	computed:{
 		...mapState(['info'])
+	},
+	async onShow() {
+		let res = await this.$http.promotionCopy()
+		console.log(res);
+		this.promotionCopyData = res.result.content
 	},
 	onLoad(options) {
 		this.val = config.apiBaseUrl + 'view/register?invitation_code=' + options.id;
@@ -151,12 +163,26 @@ export default {
 	}
 	.code_img {
 		position: absolute;
-		bottom: 200rpx;
+		bottom: 420rpx;
 		left: 0;
 		right: 0;
 		margin: auto;
-		width: 200rpx;
-		height: 200rpx;
+		width: 160rpx;
+		height: 160rpx;
+	}
+	.load-btn {
+		position: absolute;
+		bottom: 100rpx;
+		left: 0;
+		right: 0;
+		margin: auto;
+		width: 380rpx;
+		height: 90rpx;
+		line-height: 90rpx;
+		text-align: center;
+		background-color: #FFFFFF;
+		border-radius: 45rpx;
+		color: #180867;
 	}
 	.click{
 		position: absolute;
@@ -169,7 +195,7 @@ export default {
 	}
 	.code_text {
 		position: absolute;
-		bottom: 70rpx;
+		bottom: 240rpx;
 		left: 0;
 		right: 0;
 		margin: auto;

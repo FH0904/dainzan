@@ -374,6 +374,15 @@ const customerUrl = (data) => {
 		data
 	})
 }
+// 客服
+const promotionCopy = (data) => {
+	return http.request({
+		url: 'team/promotion_copy',
+		dataType: 'json',
+		method: 'GET',
+		data
+	})
+}
 export default {
 	uploadFile,
 	phoneLogin,
@@ -416,5 +425,6 @@ export default {
 	taskCancel,
 	taskSubmit,
 	bankList,
-	customerUrl
+	customerUrl,
+	promotionCopy
 }
